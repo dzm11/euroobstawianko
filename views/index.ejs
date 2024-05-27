@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie przez Google</title>
+</head>
+<body>
+    <% if (user) { %>
+        <h1>Profil</h1>
+        <p>Zalogowany jako: <%= user.display_name %></p>
+        <a href="/logout">Wyloguj</a>
+        <h2>Mecze Euro 2024</h2>
+        <table>
+            <tr>
+                <th>Data</th>
+                <th>Godzina</th>
+                <th>Mecz</th>
+                <th>Wynik 1. drużyny</th>
+                <th>Wynik 2. drużyny</th>
+                <th>Akcja</th>
+            </tr>
+            <% matches.forEach(match => { %>
+                <tr>
+                    <td><%= match.date %></td>
+                    <td><%= match.time %></td>
+                    <td><%= match.team1 %> vs <%= match.team2 %></td>
+                    <td>
+                        <% 
+                          const prediction = predictions.find(p => p.match_id === match.id);
+                          const team1Score = prediction ? prediction.team1_score : '';
+                          const team2Score = prediction ? prediction.team2_score : '';
+                        %>
+                        <form action="/submit-prediction" method="POST">
+                            <input type="hidden" name="matchId" value="<%= match.id %>">
+                            <input type="number" name="team1_score" value="<%= team1Score %>" placeholder="0" required>
+                            <input type="number" name="team2_score" value="<%= team2Score %>" placeholder="0" required>
+                            <button type="submit">Zapisz</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </table>
+    <% } else { %>
+        <h1>Logowanie przez Google</h1>
+        <a href="/auth/google">Zaloguj się przez Google</a>
+    <% } %>
+</body>
+</html>
