@@ -30,7 +30,7 @@ const matches = [
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://euroobstawianko-5f45528c030a.herokuapp.com/auth/google/callback"
+    callbackURL: "https://euroobstawianko.onrender.com/auth/google/callback"
   },
   async function(token, tokenSecret, profile, done) {
     try {
